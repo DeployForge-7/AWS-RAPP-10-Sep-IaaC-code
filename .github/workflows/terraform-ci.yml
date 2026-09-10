@@ -4,7 +4,9 @@ on:
   pull_request:
     branches:
       - dev
-
+defaults:
+  run:
+    working-directory: terraform-vpc
 jobs:
   terraform:
     runs-on: ubuntu-latest
