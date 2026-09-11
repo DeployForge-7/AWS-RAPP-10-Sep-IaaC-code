@@ -1,0 +1,53 @@
+name: Terraform CI
+
+on:
+  pull_request:
+    branches:
+      - dev
+
+permissions:
+  contents: read
+  id-token: write
+
+defaults:
+  run:
+    working-directory: terraform-vpc
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Show GitHub repository information
+        run: |
+          echo "Repository: $GITHUB_REPOSITORY"
+          echo "Event: $GITHUB_EVENT_NAME"
+          echo "Repository ID: $GITHUB_REPOSITORY_ID"
+          echo "Repository Owner ID: $GITHUB_REPOSITORY_OWNER_ID"
+      
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: arn:aws:iam::736954621241:role/github-actions-terraform-role-v2
+          aws-region: ap-south-1
+
+      - name: Check AWS identity
+        run: aws sts get-caller-identity
+
+      - name: Terraform Format
+        run: terraform fmt -check -recursive
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Terraform Plan
+        run: terraform plan
