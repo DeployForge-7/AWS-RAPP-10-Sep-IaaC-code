@@ -52,3 +52,5 @@ jobs:
 
       - name: Terraform Plan
         run: terraform plan
+      - name: Debug GitHub OIDC Claims
+        uses: actions-oidc-debugger@v1
