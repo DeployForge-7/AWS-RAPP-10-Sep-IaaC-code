@@ -30,6 +30,7 @@ jobs:
           echo "Event: $GITHUB_EVENT_NAME"
           echo "Repository ID: $GITHUB_REPOSITORY_ID"
           echo "Repository Owner ID: $GITHUB_REPOSITORY_OWNER_ID"
+          echo "sucess"
       
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v6
